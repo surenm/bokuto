@@ -1,20 +1,18 @@
-# Capistrano::OpsWorks
+# Bokuto
 
-A gem to help deploy rails applications to AWS OpsWorks, which hopefully works with capistrano 3
+Bokuto - A bokken (木剣, bok(u), "wood", and ken, "sword") (or commonly as bokutō 木刀 in Japan) is a Japanese wooden sword used for training
+
+A gem to help deploy rails applications to AWS OpsWorks.
 
 ## Installation
 
 Add this line to your application's Gemfile:
 
-    gem 'capistrano-ops_works'
+    gem 'bokuto', :git => 'https://github.com/surenm/bokuto.git'
 
 And then execute:
 
     $ bundle
-
-Or install it yourself as:
-
-    $ gem install capistrano-ops_works
 
 ## Usage
 
@@ -35,7 +33,7 @@ require 'capistrano/setup'
 # Includes default deployment tasks
 require 'capistrano/deploy'
 
-require 'capistrano/ops_works'
+require 'capistrano/bokuto'
 
 # Includes tasks from other gems included in your Gemfile
 #
@@ -79,25 +77,17 @@ Check the task list using
 
     $ bundle exec cap -T
 
-Check your app_id
+Check if you are all set to deploy using bokken.
 
-    $ bundle exec cap staging opsworks:check
+    $ bundle exec cap staging deploy:check
 
 Deploy your app (you'll get a deployment_id back if it worked)
 
-    $ bundle exec cap staging opsworks
-    $ bundle exec cap staging opsworks:migrate
+    $ bundle exec cap staging deploy
 
 Check the history of your app deployments
 
-    $ bundle exec cap staging opsworks:history
-
-## FAQ
-
-1. Why is the name so ugly?
-  * [capistrano-opsworks](https://github.com/onemightyroar/capistrano-opsworks) was already taken, but unfortunately doesn't work with capistrano 3.
-2. Why are the task names namespaced with opsworks instead of ops_works?
-  * to make it less ugly, and easier to type
+    $ bundle exec cap staging bokuto:history
 
 ## Contributing
 

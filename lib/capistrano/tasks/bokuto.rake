@@ -1,17 +1,17 @@
 require 'rake'
-require 'capistrano/ops_works'
+require 'capistrano/bokken'
 
-namespace :opsworks do
+namespace :bokuto do
 
   def opsworks
-    Capistrano::OpsWorks::Connection.new(\
+    Capistrano::Bokuto::Connection.new(\
       :access_key_id => fetch(:access_key_id),
       :secret_access_key => fetch(:secret_access_key)
     )
   end
 
   def deployment_ids
-    { 
+    {
       :stack_id => fetch(:stack_id),
       :app_id => fetch(:app_id)
     }
@@ -24,7 +24,7 @@ namespace :opsworks do
         :name => 'deploy', 
         :args => command_args
       },
-      :comment => 'Capistrano OpsWorks Deploy',
+      :comment => 'Bokken Deploy',
       :custom_json => fetch(:opsworks_custom_json) || ''
     }
     opts = ids.merge(deploy_opts)
@@ -58,4 +58,6 @@ namespace :opsworks do
 end
 
 desc "Deploy to opsworks"
-task :opsworks => ["opsworks:default"]
+task :bokuto => ["bokken:default"]
+after 'deploy:check', 'bokuto:check'
+after 'deploy:starting', 'bokuto:default'

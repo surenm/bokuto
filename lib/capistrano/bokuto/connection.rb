@@ -1,7 +1,7 @@
 require 'aws/ops_works'
 
 module Capistrano
-  module OpsWorks
+  module Bokuto
     class Connection
 
       attr_reader :client
