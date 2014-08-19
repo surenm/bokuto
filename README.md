@@ -4,7 +4,7 @@ Bokuto - A bokken (木剣, bok(u), "wood", and ken, "sword") (or commonly as bok
 
 A gem to help deploy rails applications to AWS OpsWorks. Its Japanese name is inspired from Heroku since the goal is to make Bokuto a capistrano library to make opsworks deploys as close to heroku as possible.
 
-Credits: This project is inspired from and is developed over hcliu/capistrano-opsworks.
+Credits: This project is inspired from and is developed over [hcliu/capistrano-opsworks](https://github.com/hcliu/capistrano-opsworks)
 
 ## Installation
 
@@ -100,6 +100,8 @@ Deploy your app at a specific git revision (say test)
 
 Deploy if your IAM credentials are properly set up: 
 The following command should return your IAM user name if its properly setup
+
+    $ bundle exec cap production bokuto:credentials
 
 Check the history of your app deployments
 
