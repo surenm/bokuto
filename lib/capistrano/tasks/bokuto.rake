@@ -35,14 +35,33 @@ namespace :bokuto do
     args.deep_merge!(custom_args)
     return args.to_json
   end
+
+  def git_revision
+    branch = fetch(:branch, :master)
+    origin_version = "origin/#{branch}"
+
+    git_message = `git --no-pager log -1 --pretty=format:'%h' #{origin_version}`
+  end
+
+  def user
+    Capistrano::Bokuto::User.new(\
+      :access_key_id => fetch(:access_key_id),
+      :secret_access_key => fetch(:secret_access_key)
+    )
+  end
+
+  def deploy_comment
+    "Deploy #{git_revision} by #{user.name} via Bokken"
+  end
+
   def start_deploy command_args={}
     ids = deployment_ids
     deploy_opts = {
       :command => {
-        :name => 'deploy', 
+        :name => 'deploy',
         :args => command_args
       },
-      :comment => 'Bokken Deploy',
+      :comment => deploy_comment,
       :custom_json => custom_json
     }
     opts = ids.merge(deploy_opts)
@@ -57,6 +76,11 @@ namespace :bokuto do
   task :custom_json do
     puts custom_json
   end
+
+  task :credentials do
+    puts user.name
+  end
+
   desc "Add command arg migrate=true to deploy (Rails app specific?)"
   task :migrate do
     puts start_deploy({"migrate"=>["true"]})
