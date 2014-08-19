@@ -1,5 +1,6 @@
 require 'rake'
-require 'capistrano/bokken'
+require 'json'
+require 'capistrano/bokuto'
 
 namespace :bokuto do
 
@@ -17,6 +18,23 @@ namespace :bokuto do
     }
   end
 
+  def custom_json
+    app_name = fetch(:app_name)
+    branch = fetch(:branch, :master)
+    custom_args = fetch(:custom_deploy_args, {})
+
+    args = Hash.new
+    args[:deploy] = Hash.new
+    args[:deploy][app_name] =
+    {
+      scm: {
+        revision: branch
+      }
+    }
+
+    args.deep_merge!(custom_args)
+    return args.to_json
+  end
   def start_deploy command_args={}
     ids = deployment_ids
     deploy_opts = {
@@ -25,7 +43,7 @@ namespace :bokuto do
         :args => command_args
       },
       :comment => 'Bokken Deploy',
-      :custom_json => fetch(:opsworks_custom_json) || ''
+      :custom_json => custom_json
     }
     opts = ids.merge(deploy_opts)
 
@@ -36,6 +54,9 @@ namespace :bokuto do
     puts start_deploy
   end
 
+  task :custom_json do
+    puts custom_json
+  end
   desc "Add command arg migrate=true to deploy (Rails app specific?)"
   task :migrate do
     puts start_deploy({"migrate"=>["true"]})
@@ -57,7 +78,8 @@ namespace :bokuto do
   end
 end
 
-desc "Deploy to opsworks"
-task :bokuto => ["bokken:default"]
 after 'deploy:check', 'bokuto:check'
 after 'deploy:starting', 'bokuto:default'
+
+desc "Deploy to opsworks"
+task :bokuto => ["bokuto:default"]
