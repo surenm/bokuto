@@ -51,7 +51,7 @@ namespace :bokuto do
   end
 
   def deploy_comment
-    "Deploy #{git_revision} by #{user.name} via Bokken"
+    "Deploy #{git_revision}"
   end
 
   def start_deploy command_args={}
@@ -73,10 +73,15 @@ namespace :bokuto do
     puts start_deploy
   end
 
+  desc "Deploy to opsworks"
+  task :bokuto => ["bokuto:default"]
+
+  desc "Displays OpsWorks Custom JSON that will be generated for deploys when actually run"
   task :custom_json do
     puts custom_json
   end
 
+  desc "Displays your IAM user name"
   task :credentials do
     puts user.name
   end
@@ -129,6 +134,3 @@ end
 
 after 'deploy:check', 'bokuto:check'
 after 'deploy:starting', 'bokuto:default'
-
-desc "Deploy to opsworks"
-task :bokuto => ["bokuto:default"]
