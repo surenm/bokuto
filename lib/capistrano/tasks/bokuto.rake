@@ -100,6 +100,31 @@ namespace :bokuto do
   task :verify, :deployment_id do |task, args|
     puts opsworks.verify args[:deployment_id]
   end
+
+  # Set env variables like heroku
+  namespace :config do
+    task :get do |key|
+      raise NotImplementedError
+    end
+
+    task :set do |key, value|
+      raise NotImplementedError
+    end
+
+    task :unset do |key|
+      raise NotImplementedError
+    end
+  end
+
+  namespace :ps do
+    task :restart do
+      raise NotImplementedError
+    end
+
+    task :stop do
+      raise NotImplementedError
+    end
+  end
 end
 
 after 'deploy:check', 'bokuto:check'
